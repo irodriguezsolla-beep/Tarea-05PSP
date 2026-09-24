@@ -35,7 +35,7 @@ void main() {
                     break;
             }
         } catch (NumberFormatException Error){
-
+            System.out.println("Error: '" + nivelTexto + "' no es un nivel válido ni la palabra 'salir'.\n");
         }
     }
 }
