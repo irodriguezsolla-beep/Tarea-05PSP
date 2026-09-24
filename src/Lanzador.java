@@ -119,5 +119,68 @@ public class Lanzador {
         } catch (Exception error) {
             System.err.println("Error al ejecutar el nivel 3: " + error.getMessage());
         }
+    }
+
+    public void ejecutarnivel4(String numero) {
+        ProcessBuilder factor = new ProcessBuilder("factor", numero);
+        Process proceso = null;
+
+        try {
+            proceso = factor.start();
+
+            // Leer salida estándar
+            try (BufferedReader leer = new BufferedReader(new InputStreamReader(proceso.getInputStream()))) {
+                String linea;
+                // Corrección de paréntesis
+                while ((linea = leer.readLine()) != null) {
+                    System.out.println(numero + ": " + linea);
+                }
+            }
+
+            // comprobar si es primp
+            try {
+                int num = Integer.parseInt(numero);
+                boolean esPrimo = true;
+
+                if (num <= 1) {
+                    esPrimo = false;
+                } else {
+                    for (int i = 2; i < num; i++) {
+                        if (num % i == 0) {
+                            esPrimo = false; // Se puede dividir por otro número, NO es primo
+                            break;
+                        }
+                    }
+                }
+
+                if (esPrimo) {
+                    System.out.println("El número " + num + " es primo.");
+                } else {
+                    System.out.println("El número " + num + " NO es primo.");
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("No se pudo comprobar si es primo porque no es un número.");
+            }
+
+            int exitCode = proceso.waitFor();
+            System.out.println("Operación completa. Código de salida:" + exitCode);
+
+        } catch (Exception error) {
+            // Se usa el mismo proceso para leer el errorStream
+            if (proceso != null) {
+                try (BufferedReader leer2 = new BufferedReader(new InputStreamReader(proceso.getErrorStream()))) {
+                    String linea;
+                    // Corrección de paréntesis
+                    while ((linea = leer2.readLine()) != null) {
+                        System.out.println(numero + ": " + linea);
+                    }
+                    int exitCode2 = proceso.waitFor();
+                    System.out.println("Operación completa. Código de salida:" + exitCode2);
+                } catch (Exception e) {
+                    System.out.println("Error al leer el canal de error: " + e.getMessage());
+                }
+            }
         }
+    }
 }

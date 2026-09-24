@@ -37,6 +37,7 @@ void main() {
                 case 4:
                     System.out.println("Nivel "+ nivel);
                     System.out.println("Numero " + numero);
+                    lanzador.ejecutarnivel4(numero);
                     break;
                 default:
                     System.out.println("Opción no válida. Por favor, selecciona 1, 2, 3, 4 o salir.");
