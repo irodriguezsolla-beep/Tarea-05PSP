@@ -22,11 +22,12 @@ void main() {
                 case 1:
                     System.out.println("Nivel "+ nivel);
                     System.out.println("Numero " + numero);
-                    lanzador.ejecutar(numero);
+                    lanzador.ejecutarnivel1(numero);
                     break;
                 case 2:
                     System.out.println("Nivel "+ nivel);
                     System.out.println("Numero " + numero);
+                    lanzador.ejecutarnivel2(numero);
                     break;
                 case 3:
                     System.out.println("Nivel "+ nivel);
