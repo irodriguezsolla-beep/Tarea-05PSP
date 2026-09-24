@@ -21,21 +21,25 @@ void main() {
                 case 1:
                     System.out.println("Nivel "+ nivel);
                     System.out.println("Numero " + numero);
+                    break;
                 case 2:
                     System.out.println("Nivel "+ nivel);
                     System.out.println("Numero " + numero);
+                    break;
                 case 3:
                     System.out.println("Nivel "+ nivel);
                     System.out.println("Numero " + numero);
+                    break;
                 case 4:
                     System.out.println("Nivel "+ nivel);
                     System.out.println("Numero " + numero);
+                    break;
                 default:
                     System.out.println("Opción no válida. Por favor, selecciona 1, 2, 3, 4 o salir.");
                     break;
             }
         } catch (NumberFormatException Error){
-            System.out.println("Error: '" + nivelTexto + "' no es un nivel válido ni la palabra 'salir'.\n");
+            System.out.println("Error: '" + nivelTexto + "' no es un nivel válido ni la palabra 'salir'.");
         }
     }
 }
