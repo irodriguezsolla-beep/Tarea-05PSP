@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.File;
+import java.lang.ProcessBuilder.Redirect;
 
 public class Lanzador {
 
@@ -93,4 +95,29 @@ public class Lanzador {
             System.err.println("Error en la escritura del buffer: " + e.getMessage());
         }
     }
+
+    public void ejecutarnivel3(String numero) {
+        ProcessBuilder factor = new ProcessBuilder("factor", numero);
+
+        // Archivos de salida y error
+        File outputFile = new File("factor_output.log");
+        File errorFile = new File("factor_error.log");
+
+        // Redirect.appendTo asegura que no se borre lo que ya existía en el fichero
+        factor.redirectOutput(Redirect.appendTo(outputFile));
+        factor.redirectError(Redirect.appendTo(errorFile));
+
+        try {
+            Process proceso = factor.start();
+
+            // Esperar a que termine el proceso
+            int exitCode = proceso.waitFor();
+
+            // Mostrar ÚNICAMENTE el código de salida por pantalla
+            System.out.println("Código de salida: " + exitCode);
+
+        } catch (Exception error) {
+            System.err.println("Error al ejecutar el nivel 3: " + error.getMessage());
+        }
+        }
 }

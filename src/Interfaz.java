@@ -32,6 +32,7 @@ void main() {
                 case 3:
                     System.out.println("Nivel "+ nivel);
                     System.out.println("Numero " + numero);
+                    lanzador.ejecutarnivel3(numero);
                     break;
                 case 4:
                     System.out.println("Nivel "+ nivel);
