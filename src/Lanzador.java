@@ -9,6 +9,7 @@ public class Lanzador {
 
     public void ejecutarnivel1(String numero) {
         ProcessBuilder factor = new ProcessBuilder("factor", numero);
+        factor.redirectErrorStream(true);
         Process proceso = null;
 
         try {
@@ -19,7 +20,7 @@ public class Lanzador {
                 String linea;
                 // Corrección de paréntesis
                 while ((linea = leer.readLine()) != null) {
-                    System.out.println(numero + ": " + linea);
+                    System.out.println(linea);
                 }
             }
 
@@ -33,9 +34,10 @@ public class Lanzador {
                     String linea;
                     // Corrección de paréntesis
                     while ((linea = leer2.readLine()) != null) {
-                        System.out.println(numero + ": " + linea);
+                        System.out.println(linea);
                     }
                     int exitCode2 = proceso.waitFor();
+                    System.out.println("factor: "+ numero+" is not a valid positive integer");
                     System.out.println("Operación completa. Código de salida:" + exitCode2);
                 } catch (Exception e) {
                     System.out.println("Error al leer el canal de error: " + e.getMessage());
@@ -46,6 +48,7 @@ public class Lanzador {
 
     public void ejecutarnivel2(String numero) {
         ProcessBuilder factor = new ProcessBuilder("factor", numero);
+        factor.redirectErrorStream(true);
         Process proceso = null;
 
         // Se conecta el BufferedWriter a la consola (System.out)
@@ -54,27 +57,44 @@ public class Lanzador {
             try {
                 proceso = factor.start();
 
-                // Leer la salida estándar del proceso
-                try (BufferedReader leer = new BufferedReader(new InputStreamReader(proceso.getInputStream()))) {
-                    String linea;
-                    while ((linea = leer.readLine()) != null) {
-                        // Se escribe mediante el BufferedWriter
-                        escritor.write("[OK] " + numero + ": " + linea);
-                        escritor.newLine(); // Salto de línea
+                StringBuilder resultado = new StringBuilder();
+
+                // 1. Leemos todo lo que devuelva la salida normal o de error
+                BufferedReader leerNorm = new BufferedReader(new InputStreamReader(proceso.getInputStream()));
+                BufferedReader leerErr = new BufferedReader(new InputStreamReader(proceso.getErrorStream()));
+
+                String linea;
+                while ((linea = leerNorm.readLine()) != null) {
+                    resultado.append(linea).append("\n");
+                }
+                while ((linea = leerErr.readLine()) != null) {
+                    resultado.append(linea).append("\n");
+                }
+
+                // 2. Esperamos el código de salida
+                int exitCode = proceso.waitFor();
+
+                // 3. Definimos si es [OK] o [ERROR]
+                String prefijo = (exitCode == 0) ? "[OK] " : "[ERROR] ";
+
+                // 4. Imprimimos el contenido acumulado
+                for (String l : resultado.toString().split("\n")) {
+                    if (!l.isBlank()) {
+                        escritor.write(prefijo + l);
+                        escritor.newLine();
                     }
                 }
 
-                int exitCode = proceso.waitFor();
-                escritor.write("[OK] Operación completa. Código de salida: " + exitCode);
+                // 5. Imprimimos la operación completada limpia
+                escritor.write("Operación completada. Código de salida: " + exitCode);
                 escritor.newLine();
-                escritor.flush(); // Asegura que todo el texto se envíe a la consola
 
             } catch (Exception error) {
                 if (proceso != null) {
                     try (BufferedReader leer2 = new BufferedReader(new InputStreamReader(proceso.getErrorStream()))) {
                         String linea;
                         while ((linea = leer2.readLine()) != null) {
-                            escritor.write("[ERROR] " + numero + ": " + linea);
+                            escritor.write("[ERROR] " + linea);
                             escritor.newLine();
                         }
                         int exitCode2 = proceso.waitFor();
@@ -123,6 +143,7 @@ public class Lanzador {
 
     public void ejecutarnivel4(String numero) {
         ProcessBuilder factor = new ProcessBuilder("factor", numero);
+        factor.redirectErrorStream(true);
         Process proceso = null;
 
         try {
@@ -133,7 +154,7 @@ public class Lanzador {
                 String linea;
                 // Corrección de paréntesis
                 while ((linea = leer.readLine()) != null) {
-                    System.out.println(numero + ": " + linea);
+                    System.out.println(linea);
                 }
             }
 
